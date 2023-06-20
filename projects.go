@@ -281,6 +281,7 @@ type ListProjectsOptions struct {
 	OrderBy                  *string           `url:"order_by,omitempty" json:"order_by,omitempty"`
 	Owned                    *bool             `url:"owned,omitempty" json:"owned,omitempty"`
 	RepositoryChecksumFailed *bool             `url:"repository_checksum_failed,omitempty" json:"repository_checksum_failed,omitempty"`
+	RepositoryStorage        *string           `url:"repository_storage,omitempty" json:"repository_storage,omitempty"`
 	Search                   *string           `url:"search,omitempty" json:"search,omitempty"`
 	SearchNamespaces         *bool             `url:"search_namespaces,omitempty" json:"search_namespaces,omitempty"`
 	Simple                   *bool             `url:"simple,omitempty" json:"simple,omitempty"`
