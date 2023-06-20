@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/go-cleanhttp"
 	"io"
 	"io/ioutil"
 	"math/rand"
@@ -33,7 +34,6 @@ import (
 	"time"
 
 	"github.com/google/go-querystring/query"
-	"github.com/hashicorp/go-cleanhttp"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"golang.org/x/oauth2"
 	"golang.org/x/time/rate"
@@ -98,93 +98,94 @@ type Client struct {
 	UserAgent string
 
 	// Services used for talking to different parts of the GitLab API.
-	AccessRequests        *AccessRequestsService
-	Applications          *ApplicationsService
-	AuditEvents           *AuditEventsService
-	Avatar                *AvatarRequestsService
-	AwardEmoji            *AwardEmojiService
-	Boards                *IssueBoardsService
-	Branches              *BranchesService
-	BroadcastMessage      *BroadcastMessagesService
-	CIYMLTemplate         *CIYMLTemplatesService
-	Commits               *CommitsService
-	ContainerRegistry     *ContainerRegistryService
-	CustomAttribute       *CustomAttributesService
-	DeployKeys            *DeployKeysService
-	DeployTokens          *DeployTokensService
-	Deployments           *DeploymentsService
-	Discussions           *DiscussionsService
-	Environments          *EnvironmentsService
-	EpicIssues            *EpicIssuesService
-	Epics                 *EpicsService
-	Events                *EventsService
-	Features              *FeaturesService
-	FreezePeriods         *FreezePeriodsService
-	GitIgnoreTemplates    *GitIgnoreTemplatesService
-	GroupBadges           *GroupBadgesService
-	GroupCluster          *GroupClustersService
-	GroupImportExport     *GroupImportExportService
-	GroupIssueBoards      *GroupIssueBoardsService
-	GroupLabels           *GroupLabelsService
-	GroupMembers          *GroupMembersService
-	GroupMilestones       *GroupMilestonesService
-	GroupVariables        *GroupVariablesService
-	GroupWikis            *GroupWikisService
-	Groups                *GroupsService
-	InstanceCluster       *InstanceClustersService
-	InstanceVariables     *InstanceVariablesService
-	Invites               *InvitesService
-	IssueLinks            *IssueLinksService
-	Issues                *IssuesService
-	IssuesStatistics      *IssuesStatisticsService
-	Jobs                  *JobsService
-	Keys                  *KeysService
-	Labels                *LabelsService
-	License               *LicenseService
-	LicenseTemplates      *LicenseTemplatesService
-	ManagedLicenses       *ManagedLicensesService
-	MergeRequestApprovals *MergeRequestApprovalsService
-	MergeRequests         *MergeRequestsService
-	Milestones            *MilestonesService
-	Namespaces            *NamespacesService
-	Notes                 *NotesService
-	NotificationSettings  *NotificationSettingsService
-	Packages              *PackagesService
-	PagesDomains          *PagesDomainsService
-	PipelineSchedules     *PipelineSchedulesService
-	PipelineTriggers      *PipelineTriggersService
-	Pipelines             *PipelinesService
-	ProjectBadges         *ProjectBadgesService
-	ProjectAccessTokens   *ProjectAccessTokensService
-	ProjectCluster        *ProjectClustersService
-	ProjectImportExport   *ProjectImportExportService
-	ProjectMembers        *ProjectMembersService
-	ProjectMirrors        *ProjectMirrorService
-	ProjectSnippets       *ProjectSnippetsService
-	ProjectVariables      *ProjectVariablesService
-	Projects              *ProjectsService
-	ProtectedBranches     *ProtectedBranchesService
-	ProtectedEnvironments *ProtectedEnvironmentsService
-	ProtectedTags         *ProtectedTagsService
-	ReleaseLinks          *ReleaseLinksService
-	Releases              *ReleasesService
-	Repositories          *RepositoriesService
-	RepositoryFiles       *RepositoryFilesService
-	ResourceLabelEvents   *ResourceLabelEventsService
-	ResourceStateEvents   *ResourceStateEventsService
-	Runners               *RunnersService
-	Search                *SearchService
-	Services              *ServicesService
-	Settings              *SettingsService
-	Sidekiq               *SidekiqService
-	Snippets              *SnippetsService
-	SystemHooks           *SystemHooksService
-	Tags                  *TagsService
-	Todos                 *TodosService
-	Users                 *UsersService
-	Validate              *ValidateService
-	Version               *VersionService
-	Wikis                 *WikisService
+	AccessRequests               *AccessRequestsService
+	Applications                 *ApplicationsService
+	AuditEvents                  *AuditEventsService
+	Avatar                       *AvatarRequestsService
+	AwardEmoji                   *AwardEmojiService
+	Boards                       *IssueBoardsService
+	Branches                     *BranchesService
+	BroadcastMessage             *BroadcastMessagesService
+	CIYMLTemplate                *CIYMLTemplatesService
+	Commits                      *CommitsService
+	ContainerRegistry            *ContainerRegistryService
+	CustomAttribute              *CustomAttributesService
+	DeployKeys                   *DeployKeysService
+	DeployTokens                 *DeployTokensService
+	Deployments                  *DeploymentsService
+	Discussions                  *DiscussionsService
+	Environments                 *EnvironmentsService
+	EpicIssues                   *EpicIssuesService
+	Epics                        *EpicsService
+	Events                       *EventsService
+	Features                     *FeaturesService
+	FreezePeriods                *FreezePeriodsService
+	GitIgnoreTemplates           *GitIgnoreTemplatesService
+	GroupBadges                  *GroupBadgesService
+	GroupCluster                 *GroupClustersService
+	GroupImportExport            *GroupImportExportService
+	GroupIssueBoards             *GroupIssueBoardsService
+	GroupLabels                  *GroupLabelsService
+	GroupMembers                 *GroupMembersService
+	GroupMilestones              *GroupMilestonesService
+	GroupVariables               *GroupVariablesService
+	GroupWikis                   *GroupWikisService
+	Groups                       *GroupsService
+	InstanceCluster              *InstanceClustersService
+	InstanceVariables            *InstanceVariablesService
+	Invites                      *InvitesService
+	IssueLinks                   *IssueLinksService
+	Issues                       *IssuesService
+	IssuesStatistics             *IssuesStatisticsService
+	Jobs                         *JobsService
+	Keys                         *KeysService
+	Labels                       *LabelsService
+	License                      *LicenseService
+	LicenseTemplates             *LicenseTemplatesService
+	ManagedLicenses              *ManagedLicensesService
+	MergeRequestApprovals        *MergeRequestApprovalsService
+	MergeRequests                *MergeRequestsService
+	Milestones                   *MilestonesService
+	Namespaces                   *NamespacesService
+	Notes                        *NotesService
+	NotificationSettings         *NotificationSettingsService
+	Packages                     *PackagesService
+	PagesDomains                 *PagesDomainsService
+	PipelineSchedules            *PipelineSchedulesService
+	PipelineTriggers             *PipelineTriggersService
+	Pipelines                    *PipelinesService
+	ProjectBadges                *ProjectBadgesService
+	ProjectAccessTokens          *ProjectAccessTokensService
+	ProjectCluster               *ProjectClustersService
+	ProjectImportExport          *ProjectImportExportService
+	ProjectMembers               *ProjectMembersService
+	ProjectMirrors               *ProjectMirrorService
+	ProjectRepositoryStorageMove *ProjectRepositoryStorageMoveService
+	ProjectSnippets              *ProjectSnippetsService
+	ProjectVariables             *ProjectVariablesService
+	Projects                     *ProjectsService
+	ProtectedBranches            *ProtectedBranchesService
+	ProtectedEnvironments        *ProtectedEnvironmentsService
+	ProtectedTags                *ProtectedTagsService
+	ReleaseLinks                 *ReleaseLinksService
+	Releases                     *ReleasesService
+	Repositories                 *RepositoriesService
+	RepositoryFiles              *RepositoryFilesService
+	ResourceLabelEvents          *ResourceLabelEventsService
+	ResourceStateEvents          *ResourceStateEventsService
+	Runners                      *RunnersService
+	Search                       *SearchService
+	Services                     *ServicesService
+	Settings                     *SettingsService
+	Sidekiq                      *SidekiqService
+	Snippets                     *SnippetsService
+	SystemHooks                  *SystemHooksService
+	Tags                         *TagsService
+	Todos                        *TodosService
+	Users                        *UsersService
+	Validate                     *ValidateService
+	Version                      *VersionService
+	Wikis                        *WikisService
 }
 
 // ListOptions specifies the optional parameters to various List methods that
@@ -334,6 +335,7 @@ func newClient(options ...ClientOptionFunc) (*Client, error) {
 	c.ProjectImportExport = &ProjectImportExportService{client: c}
 	c.ProjectMembers = &ProjectMembersService{client: c}
 	c.ProjectMirrors = &ProjectMirrorService{client: c}
+	c.ProjectRepositoryStorageMove = &ProjectRepositoryStorageMoveService{client: c}
 	c.ProjectSnippets = &ProjectSnippetsService{client: c}
 	c.ProjectVariables = &ProjectVariablesService{client: c}
 	c.Projects = &ProjectsService{client: c}
@@ -770,23 +772,24 @@ func CheckResponse(r *http.Response) error {
 }
 
 // Format:
-// {
-//     "message": {
-//         "<property-name>": [
-//             "<error-message>",
-//             "<error-message>",
-//             ...
-//         ],
-//         "<embed-entity>": {
-//             "<property-name>": [
-//                 "<error-message>",
-//                 "<error-message>",
-//                 ...
-//             ],
-//         }
-//     },
-//     "error": "<error-message>"
-// }
+//
+//	{
+//	    "message": {
+//	        "<property-name>": [
+//	            "<error-message>",
+//	            "<error-message>",
+//	            ...
+//	        ],
+//	        "<embed-entity>": {
+//	            "<property-name>": [
+//	                "<error-message>",
+//	                "<error-message>",
+//	                ...
+//	            ],
+//	        }
+//	    },
+//	    "error": "<error-message>"
+//	}
 func parseError(raw interface{}) string {
 	switch raw := raw.(type) {
 	case string:
